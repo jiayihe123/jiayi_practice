@@ -12,15 +12,15 @@ from apache_beam.options.pipeline_options import SetupOptions
 
 class WordExtractingDoFn(beam.DoFn):
     def process(self, element):
-        return re.findall(r'[\w\']+',element, re.UNICODE)
+        return re.findall(r'[\w\']+', element, re.UNICODE)
 
 def run(argv = None, save_min_session = True):
     parser = argparse.ArgumentParser()
     parser.add_argment(
         '--input',
         dest = 'input',
-        default = 'gs://dataflow-samples/shakespeare/kinglear.txt',
-        help = 'Input file tp process.'
+        default = 'https://github.com/cs109/2015/blob/master/Lectures/Lecture15b/sparklect/shakes/kinglear.txt',
+        help = 'Input file to process.'
         )
 
     parser.add_argment(
@@ -45,7 +45,7 @@ def run(argv = None, save_min_session = True):
         )
 
     def format_result(word, count):
-        return '%s:%d'%(word,count)
+        return '%s: %d' % (word, count)
 
     output = counts | 'Format' >> beam.MapTuple(format_result)
     output | 'Write' >> WriteToText(known_args.output)
@@ -54,6 +54,16 @@ def run(argv = None, save_min_session = True):
 if __name__ == ' __main__':
     logging.getLogger().setLevel(logging.INFO)
     run()
+
+
+
+
+
+
+
+
+
+
 
 
 # input_file = 'gs://dataflow-samples/shakespeare/kinglear.txt'
